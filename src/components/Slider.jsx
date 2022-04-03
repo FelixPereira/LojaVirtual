@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'; 
-import { slideItems } from '../slideItems';
+import { slideItems } from '../data';
 
 const Container = styled.div`
   width: 100%;
