@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as CartIcon } from '../assets/cart-add.svg';
+import { mobile } from '../responsive';
 
 const Container = styled.div`
   display: flex;
+
+  ${mobile({ flexDirection: 'column' })};
 `;
 
 const Left = styled.div`
@@ -59,7 +62,7 @@ const ListItem = styled.li`
 
 const Right = styled.div`
   flex: 1;
-  paddign: 20px
+  padding: 20px;
 `;
 
 const ContactItem = styled.p`

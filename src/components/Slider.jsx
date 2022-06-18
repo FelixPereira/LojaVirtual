@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'; 
 import { slideItems } from '../data';
+import { mobile } from '../responsive';
 
 const Container = styled.div`
   width: 100%;
@@ -8,6 +9,8 @@ const Container = styled.div`
   display: flex;
   position: relative;
   overflow: hidden;
+
+  ${mobile({ display: 'none' })};
 `;
 
 const ArrowContainer = styled.div`
@@ -27,6 +30,8 @@ const ArrowContainer = styled.div`
   cursor: pointer;
   z-index: 2;
 `; 
+
+const Arrow = styled.span``;
 
 const Wrapper = styled.div`
   height: 100%;
@@ -91,7 +96,7 @@ const Slider = () => {
   return(
     <Container>
       <ArrowContainer onClick={() => handleClick('left')} direction='left'>
-        <span>&#10094;</span>
+        <Arrow>&#10094;</Arrow>
       </ArrowContainer>
 
       <Wrapper slideIndex={slideIndex}>
@@ -112,7 +117,7 @@ const Slider = () => {
       </Wrapper>
 
       <ArrowContainer onClick={() => handleClick('right')} direction='right'>
-        <span>&#10095;</span>
+        <Arrow>&#10095;</Arrow>
       </ArrowContainer>
     </Container>
   )
