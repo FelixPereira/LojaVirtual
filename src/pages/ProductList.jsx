@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import styled from 'styled-components';
+import {useParams} from 'react-router-dom';
+
 import Announcement from '../components/Announcement';
 import Navbar from '../components/Navbar';
 import Products from '../components/Products';
@@ -41,6 +44,21 @@ const Option = styled.option`
 `;
 
 const ProductList = () => {
+  const [filters, setFilters] = useState({});
+  const [sort, setSort] = useState("newest");
+  const category = useParams().category;
+
+  const handleFilters = (e) => {
+    const value = e.target.value;
+    const name = e.target.name;
+
+    setFilters({
+      ...filters,
+      [name]: value
+    });
+  }
+
+
   return(
     <Container>
       <Announcement />
@@ -49,8 +67,8 @@ const ProductList = () => {
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products:</FilterText>
-          <Select>
-            <Option disabled selected>Color</Option>
+          <Select name="color" onChange={handleFilters} defaultValue="Color">
+            <Option disabled>Color</Option>
             <Option>White</Option>
             <Option>Black</Option>
             <Option>Red</Option>
@@ -58,9 +76,9 @@ const ProductList = () => {
             <Option>Yellow</Option>
             <Option>Green</Option>
           </Select>
-          <Select>
-            <Option disabled selected>Size</Option>
-            <Option>X5</Option>
+          <Select name="size" onChange={handleFilters} defaultValue="Size">
+            <Option disabled>Size</Option>
+            <Option>XS</Option>
             <Option>S</Option>
             <Option>M</Option>
             <Option>L</Option>
@@ -69,14 +87,14 @@ const ProductList = () => {
         </Filter>
         <Filter>
           <FilterText>Sort Products:</FilterText>
-          <Select>
-            <Option selected>Newest</Option>
-            <Option>Price (ASC)</Option>
-            <Option>Price (DESC)</Option>
+          <Select onChange={e => setSort(e.target.value)}>
+            <Option value="newest">Newest</Option>
+            <Option value="asc">Price (ASC)</Option>
+            <Option value="desc">Price (DESC)</Option>
           </Select>
         </Filter>
       </FilterContainer>
-      <Products />
+      <Products category={category} sort={sort} filters={filters} />
       <Newsletter />
       <Footer />
     </Container>
