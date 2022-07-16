@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as CartIcon } from '../assets/cart-add.svg';
 import { ReactComponent as SearchIcon } from '../assets/search.svg';
@@ -118,8 +119,10 @@ const Navbar = () => {
           <MenuItem>REGISTER</MenuItem>
           <MenuItem>SIGN IN</MenuItem>
           <MenuItem as={ShoppingContainer}>
-            <CartIcon style={{width: '27px', height: '27px'}} />
-            <ItemsQuantity>{quantity}</ItemsQuantity>
+            <Link to='/cart'>
+              <CartIcon style={{width: '27px', height: '27px'}} />
+              <ItemsQuantity>{quantity}</ItemsQuantity>
+            </Link>
           </MenuItem>
         </Right>
       </Wrapper>

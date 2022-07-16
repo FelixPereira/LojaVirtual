@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Remove } from '../assets/cross.svg';
-import { ReactComponent as Add } from '../assets/cart-add.svg';
+
+import {Add, Remove} from '@material-ui/icons';
+
 import { mobile } from '../responsive';
 
 import Navbar from '../components/Navbar';
 import Announcement from '../components/Announcement';
 import Newsletter from '../components/Newsletter';
 import Footer from '../components/Footer';
+import { useSelector } from 'react-redux';
 
 const Container = styled.div``;
 
@@ -129,7 +131,7 @@ const Hr = styled.hr`
   margin: 20px 0;
   background-color: #eee;
   border: none;
-  height: 1px;
+  height: 2px;
 `;
 
 const Summary = styled.div`
@@ -167,6 +169,8 @@ const Button = styled.button`
 
 
 const Cart = () => {
+  const cart = useSelector(state => state.cart);
+
   return(
     <Container>
       <Announcement />
@@ -176,58 +180,45 @@ const Cart = () => {
         <Top>
           <TopButton>CONTINUE SHOPPING</TopButton>
           <TopTexts>
-            <TopText>Shopping Bag (2)</TopText>
+            <TopText>Shopping Bag ({cart.quantity})</TopText>
             <TopText>You wishlidt (2)</TopText>
           </TopTexts>
           <TopButton type='filled'>CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
-            <Product>
-              <ProductDetail>
-                <Image src='/images/shop-img/mens/polka-dot-shirt.png' />
-                <Details>
-                  <ProductName><b>Product:</b> Polka dot shirt</ProductName>
-                  <ProductID><b>ID:</b> Id do producto</ProductID>
-                  <ProductColor color='black' />
-                  <ProductSize><b>Size:</b> L</ProductSize>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <ProductAmoutContainer>
-                  <Add style={{width: '20px', height: '20px'}}/>
-                  <ProductAmout>5</ProductAmout>
-                  <Remove style={{width: '20px', height: '20px'}}/>
-                </ProductAmoutContainer>
-                <ProductPrice>$ 5000</ProductPrice>
-              </PriceDetail>
-            </Product>
-            <Hr />
-            <Product>
-              <ProductDetail>
-                <Image src='/images/shop-img/hats/brown-brim.png' />
-                <Details>
-                  <ProductName><b>Product:</b> Brown brim</ProductName>
-                  <ProductID><b>ID:</b> Id do producto</ProductID>
-                  <ProductColor color='black' />
-                  <ProductSize><b>Size:</b> XL</ProductSize>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <ProductAmoutContainer>
-                  <Add style={{width: '20px', height: '20px'}}/>
-                  <ProductAmout>5</ProductAmout>
-                  <Remove style={{width: '20px', height: '20px'}}/>
-                </ProductAmoutContainer>
-                <ProductPrice>$ 5000</ProductPrice>
-              </PriceDetail>
-            </Product>
+            {
+              cart.products.map(product => (
+                <>
+                  <Product>
+                    <ProductDetail>
+                      <Image src={product.img} />
+                      <Details>
+                        <ProductName><b>Product:</b> {product.title}</ProductName>
+                        <ProductID><b>ID:</b> {product.id}</ProductID>
+                        <ProductColor color={product.color} />
+                        <ProductSize><b>Size:</b> {product.size}</ProductSize>
+                      </Details>
+                    </ProductDetail>
+                    <PriceDetail>
+                      <ProductAmoutContainer>
+                        <Remove style={{cursor: 'pointer'}}/>
+                        <ProductAmout>{product.quantity}</ProductAmout>
+                        <Add style={{cursor: 'pointer'}}/>
+                      </ProductAmoutContainer>
+                      <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
+                    </PriceDetail>
+                  </Product>
+                  <Hr />
+                </>
+              ))
+            }
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryTtemText>Subtotal</SummaryTtemText>
-              <SummaryPrice>$ 58</SummaryPrice>
+              <SummaryPrice>$ {cart.total}</SummaryPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryTtemText>Estimated Shipping</SummaryTtemText>
@@ -239,7 +230,7 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type='total'>
               <SummaryTtemText>Total</SummaryTtemText>
-              <SummaryPrice>$ 100</SummaryPrice>
+              <SummaryPrice>$ {cart.total}</SummaryPrice>
             </SummaryItem>
             <Button>CHECKOUT NOW</Button>
           </Summary>
