@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ReactComponent as CartIcon } from '../assets/cart-add.svg';
 import { ReactComponent as Search } from '../assets/search.svg';
 import { ReactComponent as HeartIcon } from '../assets/heart.svg';
+import { Link } from 'react-router-dom';
 
 const Info = styled.div`
   opacity: 0;
@@ -77,9 +78,11 @@ const Product = ({item}) => {
         <IconContainer>
           <CartIcon style={{width: '30px', height: '30px'}} />
         </IconContainer>
-        <IconContainer>
-          <Search style={{width: '20px', height: '20px'}} />
-        </IconContainer>
+        <Link to={`/product/${item.id}`}>
+          <IconContainer>
+            <Search style={{width: '20px', height: '20px'}} />
+          </IconContainer>
+        </Link>
         <IconContainer>
           <HeartIcon style={{width: '20px', height: '20px'}} />
         </IconContainer>

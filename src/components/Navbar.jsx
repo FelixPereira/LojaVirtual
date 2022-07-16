@@ -98,6 +98,7 @@ const ItemsQuantity = styled.span`
 
 
 const Navbar = () => {
+  const cart = useSelec();
   return(
     <Container>
       <Wrapper>

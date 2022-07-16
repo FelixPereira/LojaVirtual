@@ -1,11 +1,18 @@
-import React from 'react';
-import { ReactComponent as Remove } from '../assets/cross.svg';
+import React, { useState, useEffect } from 'react';
+
 import styled from 'styled-components';
+import { useParams } from 'react-router';
+
 import Navbar from '../components/Navbar';
 import Announcement from '../components/Announcement';
 import Newsletter from '../components/Newsletter';
 import Footer from '../components/Footer';
-import { mobile } from '../responsive';
+
+import { mobile } from '../responsive'; 
+import { Add } from '@material-ui/icons';
+import { Remove } from '@material-ui/icons';
+import {popularProducts} from '../data';
+// import {publiqueRequest} from '../requestMethods';
 
 const Container = styled.div``;
 
@@ -81,9 +88,7 @@ const FilterSize = styled.select`
   padding: 5px;
 `;
 
-const FilterSizeOption = styled.option`
-
-`;
+const FilterSizeOption = styled.option``;
 
 const AddContainer = styled.div`
   display: flex;
@@ -127,43 +132,81 @@ const Buttom = styled.button`
 
 
 const ProductPage = () => {
+  const {productId} = useParams();
+  const [product, setProduct] = useState({});
+  let [quantity, setQuantity] = useState(1);
+  let [size, setSize] = useState("");
+  let [color, setColor] = useState("");
+  const productFinded = popularProducts.find(item => item.id === productId);
+
+  useEffect(() => {
+    setProduct(productFinded);
+    /*
+        const getProduct = async () => {
+          try {
+            const res = await publiqueRequest.get(`products/find/${productId}`);
+            setProduct(res.data);
+          } catch(err) {
+            console.log(err);
+          }
+        }
+        getProduct();
+    */
+  }, [productId, productFinded]);
+
+  const handleAddToCart = () => {
+
+  }
+
   return(
     <Container>
       <Announcement />
       <Navbar />
       <Wrapper>
         <ImgContainer>
-          <Image src='/images/shop-img/hats/brown-brim.png' />
+          <Image src={product.img} />
         </ImgContainer>
         <InfoContainer>
-          <Title>I psum dolor.</Title>
-          <Description>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, neque. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci recusandae consequatur totam est similique itaque expedita tenetur harum atque dolorum!</Description>
-          <Price>$ 20</Price>
+          <Title>{product.title}</Title>
+          <Description>{product.desc}</Description>
+          <Price>{product.price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              <FilterColor color='black' />
-              <FilterColor color='darkblue' />
-              <FilterColor color='gray' />
+              {
+                product.colors?.map(color => (
+                  <FilterColor 
+                    color={color} 
+                    key={color} 
+                    onClick={() => setColor(color)}
+                  />
+                ))
+              }
             </Filter>
             <Filter>
               <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>SL</FilterSizeOption>
+              <FilterSize onChange={(e) => setSize(e.target.value)}>
+                {
+                  product.sizes?.map(size => (
+                    <FilterSizeOption key={size}>{size}</FilterSizeOption>
+                  ))
+                }
               </FilterSize>
             </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove style={{width: '20px', height: '20px'}}/>
-              <Amount>4</Amount>
-              <Remove style={{width: '20px', height: '20px'}}/>
+              <Remove 
+                style={{cursor: 'pointer'}}
+                onClick={() => setQuantity(quantity > 1 ? --quantity : quantity)}
+              />
+              <Amount>{quantity}</Amount>
+              <Add 
+                style={{cursor: 'pointer'}}
+                onClick={() => setQuantity(prev => ++prev)} 
+              />
             </AmountContainer>
-            <Buttom>Add to cart</Buttom>
+            <Buttom onClick={handleAddToCart}>Add to cart</Buttom>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
