@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactComponent as CartIcon } from '../assets/cart-add.svg';
 import { ReactComponent as SearchIcon } from '../assets/search.svg';
@@ -98,7 +99,8 @@ const ItemsQuantity = styled.span`
 
 
 const Navbar = () => {
-  const cart = useSelec();
+  const quantity = useSelector(state => state.cart.quantity);
+
   return(
     <Container>
       <Wrapper>
@@ -117,7 +119,7 @@ const Navbar = () => {
           <MenuItem>SIGN IN</MenuItem>
           <MenuItem as={ShoppingContainer}>
             <CartIcon style={{width: '27px', height: '27px'}} />
-            <ItemsQuantity>4</ItemsQuantity>
+            <ItemsQuantity>{quantity}</ItemsQuantity>
           </MenuItem>
         </Right>
       </Wrapper>

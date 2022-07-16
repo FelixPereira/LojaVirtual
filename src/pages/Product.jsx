@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import styled from 'styled-components';
 import { useParams } from 'react-router';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
 
 import Navbar from '../components/Navbar';
 import Announcement from '../components/Announcement';
@@ -12,6 +13,7 @@ import { mobile } from '../responsive';
 import { Add } from '@material-ui/icons';
 import { Remove } from '@material-ui/icons';
 import {popularProducts} from '../data';
+import {addProduct} from '../redux/cartRedux';
 // import {publiqueRequest} from '../requestMethods';
 
 const Container = styled.div``;
@@ -81,6 +83,11 @@ const FilterColor = styled.div`
   background-color: ${props => props.color};
   margin: 0 5px;
   cursor: pointer;
+
+  &:active {
+    transform: translateY(5px);
+    transition: .2s;
+  }
 `;
 
 const FilterSize = styled.select`
@@ -133,6 +140,7 @@ const Buttom = styled.button`
 
 const ProductPage = () => {
   const {productId} = useParams();
+  const dispatch = useDispatch();
   const [product, setProduct] = useState({});
   let [quantity, setQuantity] = useState(1);
   let [size, setSize] = useState("");
@@ -155,7 +163,9 @@ const ProductPage = () => {
   }, [productId, productFinded]);
 
   const handleAddToCart = () => {
-
+    dispatch(
+      addProduct({...product, quantity, color, size})
+    );
   }
 
   return(
@@ -174,7 +184,7 @@ const ProductPage = () => {
             <Filter>
               <FilterTitle>Color</FilterTitle>
               {
-                product.colors?.map(color => (
+                product.color?.map(color => (
                   <FilterColor 
                     color={color} 
                     key={color} 
@@ -187,7 +197,7 @@ const ProductPage = () => {
               <FilterTitle>Size</FilterTitle>
               <FilterSize onChange={(e) => setSize(e.target.value)}>
                 {
-                  product.sizes?.map(size => (
+                  product.size?.map(size => (
                     <FilterSizeOption key={size}>{size}</FilterSizeOption>
                   ))
                 }
