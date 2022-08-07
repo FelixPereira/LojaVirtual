@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -12,9 +12,8 @@ import Footer from '../components/Footer';
 import { mobile } from '../responsive'; 
 import { Add } from '@material-ui/icons';
 import { Remove } from '@material-ui/icons';
-import {popularProducts} from '../data';
 import {addProduct} from '../redux/cartRedux';
-// import {publiqueRequest} from '../requestMethods';
+import { publiqueRequest } from '../requestMethods';
 
 const Container = styled.div``;
 
@@ -145,22 +144,20 @@ const ProductPage = () => {
   let [quantity, setQuantity] = useState(1);
   let [size, setSize] = useState("");
   let [color, setColor] = useState("");
-  const productFinded = popularProducts.find(item => item.id === productId);
 
+  
   useEffect(() => {
-    setProduct(productFinded);
-    /*
-        const getProduct = async () => {
-          try {
-            const res = await publiqueRequest.get(`products/find/${productId}`);
-            setProduct(res.data);
-          } catch(err) {
-            console.log(err);
-          }
-        }
-        getProduct();
-    */
-  }, [productId, productFinded]);
+    const getProduct = async () => {
+      try {
+        const res = await publiqueRequest.get(`products/find/${productId}`);
+        setProduct(res.data);
+      } catch(err) {
+        console.log(err);
+      }
+    }
+    getProduct();
+
+  }, [productId]);
 
   const handleAddToCart = () => {
     dispatch(

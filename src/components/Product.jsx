@@ -78,7 +78,7 @@ const Product = ({item}) => {
         <IconContainer>
           <CartIcon style={{width: '30px', height: '30px'}} />
         </IconContainer>
-        <Link to={`/product/${item.id}`}>
+        <Link to={`/product/${item._id}`}>
           <IconContainer>
             <Search style={{width: '20px', height: '20px'}} />
           </IconContainer>

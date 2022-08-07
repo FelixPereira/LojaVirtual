@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import styled from 'styled-components';
-// import axios from 'axios';
+import axios from 'axios';
 
-import { popularProducts } from '../data';
+import styled from 'styled-components';
+
 import Product from './Product';
 
 const Container = styled.div`
@@ -18,22 +18,20 @@ const Products = ({filters, category, sort}) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
+  
   useEffect(() => {
-    setProducts(popularProducts);
-    /*
-      try{
+    try{
       const getProducts = async () => {
         const res = await axios.get(category 
-          ? `http://localhost:5000/products/${category}`
-          : "http://localhost:5000/products"
+          ? `http://localhost:5000/api/products/?${category}`
+          : "http://localhost:5000/api/products"
         );
-        // setProducts(res.data);
+        setProducts(res.data);
       };
       getProducts();
     } catch(err) {
-      console.log(err);
+      console.log(err.message);
     }
-    */
   }, [category]);
 
   useEffect(() => {
@@ -63,8 +61,8 @@ const Products = ({filters, category, sort}) => {
   return(
     <Container>
       { category 
-        ? filteredProducts.map(item => ( <Product item={item} key={item.id} />))
-        : products.slice(0, 9).map(item => ( <Product item={item} key={item.id} />))
+        ? filteredProducts.map(item => ( <Product item={item} key={item._id} />))
+        : products.slice(0, 9).map(item => ( <Product item={item} key={item._id} />))
       }
     </Container>
   )

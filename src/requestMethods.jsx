@@ -1,11 +1,13 @@
 import axios from 'axios';
 
 const BASE_URL = 'http://localhost:5000/api';
+const TOKEN = "kakjfkdjkjfkdsjirklskfjksdjfioelsfie";
 
 export const publiqueRequest = axios.create({
   baseURL: BASE_URL
 });
 
 export const userRequest = axios.create({
-  baseURL: BASE_URL
+  baseURL: BASE_URL,
+  header : { token: `Bearer ${TOKEN}` }
 });
