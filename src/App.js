@@ -1,5 +1,5 @@
 import React from 'react';
-import {Routes, Route} from 'react-router-dom';
+import {Routes, Route, useNavigate, Navigate} from 'react-router-dom';
 
 import Home from './pages/Home';
 import ProductList from './pages/ProductList';
@@ -11,13 +11,16 @@ import './App.css';
 
 
 function App() {
+  const user = true;
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/products/:category" element={<ProductList />} />
       <Route path="//product/:productId" element={<ProductPage />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
+
+      <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+
       <Route path="/cart" element={<Cart />} />
     </Routes>
   )
